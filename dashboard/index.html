@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>First Light — pre-token protocols ranked by shrunk implied value</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="mast">
+  <div class="mast-left">
+    <span class="logo" aria-hidden="true">FL</span>
+    <div>
+      <h1>First Light</h1>
+      <p class="tag">The pre-token launch board — which protocol is worth farming next, and what to do about it.</p>
+    </div>
+  </div>
+  <div class="mast-right" id="mast-meta" aria-live="polite"></div>
+</header>
+<main id="app" aria-busy="true">
+  <section class="strip" id="strip" aria-label="Board summary"></section>
+  <section class="method" id="method" aria-label="How a row is valued"></section>
+  <div class="layout">
+    <div class="main-col">
+      <div class="controls" id="controls"></div>
+      <div id="board-wrap"></div>
+      <section class="notes" id="notes"></section>
+    </div>
+    <aside class="rail" id="rail" aria-label="Farm next and the market line"></aside>
+  </div>
+  <footer class="foot" id="foot"></footer>
+</main>
+<dialog class="detail" id="detail" aria-labelledby="detail-title"></dialog>
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
