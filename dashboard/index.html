@@ -1,37 +1,106 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>First Light — pre-token protocols ranked by shrunk implied value</title>
+<title>Token Radar — Pre-Token Protocols Ranked by Fitted Implied Value</title>
 <link rel="stylesheet" href="app.css">
 </head>
 <body>
-<header class="mast">
-  <div class="mast-left">
-    <span class="logo" aria-hidden="true">FL</span>
-    <div>
-      <h1>First Light</h1>
-      <p class="tag">The pre-token launch board — which protocol is worth farming next, and what to do about it.</p>
-    </div>
-  </div>
-  <div class="mast-right" id="mast-meta" aria-live="polite"></div>
+<header>
+<h1>Token Radar</h1>
+<p class="subtitle">Pre-token protocols ranked by a fitted value model, with a farm plan for every row.</p>
+<p class="meta"><!--META--></p>
 </header>
-<main id="app" aria-busy="true">
-  <section class="strip" id="strip" aria-label="Board summary"></section>
-  <section class="method" id="method" aria-label="How a row is valued"></section>
-  <div class="layout">
-    <div class="main-col">
-      <div class="controls" id="controls"></div>
-      <div id="board-wrap"></div>
-      <section class="notes" id="notes"></section>
-    </div>
-    <aside class="rail" id="rail" aria-label="Farm next and the market line"></aside>
-  </div>
-  <footer class="foot" id="foot"></footer>
-</main>
-<dialog class="detail" id="detail" aria-labelledby="detail-title"></dialog>
-<script src="../data.js"></script>
+
+<section id="kpis" aria-label="Key numbers">
+<div class="kpi-grid"><!--KPI--></div>
+</section>
+
+<section id="model">
+<h2>How the value is fitted</h2>
+<!--MODEL-->
+</section>
+
+<section id="ablation">
+<h2>What validation chose</h2>
+<p>Five variants were fitted in log space on the same 90 trading protocols, and one baseline in the style of the previous round — a median peer multiple, shrunk to the global median — was scored on the same 90 protocols and the same walk-forward split, so the comparison is apple-to-apple. Leave-one-out picks the winner; walk-forward is the number this board reports. The table is the ablation: each row is a variant, and the winner is the one the leave-one-out score picked, not the one with the most features.</p>
+<!--ABLATION-->
+</section>
+
+<section id="ledger">
+<h2>All 758 protocols, accounted for</h2>
+<!--LEDGER-->
+</section>
+
+<section id="assumptions">
+<h2>Farm economics: one assumption table</h2>
+<!--ASSUMPTIONS-->
+</section>
+
+<section id="top10">
+<h2>Top 10 by implied value</h2>
+<!--TOP10-->
+</section>
+
+<section id="live">
+<h2>What already trades</h2>
+<!--LIVE-->
+</section>
+
+<section id="board">
+<h2>The full board — 198 ranked protocols</h2>
+<p>Every row is priced by the fitted model from its own TVL and seven-day change, and every row carries a farm plan costed to the dollar. Use the controls to sort and filter; click a row for its detail and its six farm steps. The page recomputes each row's implied value from its figures and checks it against the board — the check line at the bottom of the table says how many rows match.</p>
+<div class="controls">
+<label>Search <input id="q" type="search" placeholder="name or slug" autocomplete="off"></label>
+<label>Verdict
+<select id="verdict">
+<option value="">All</option>
+<option value="FARM">FARM</option>
+<option value="THIN">THIN</option>
+<option value="SKIP">SKIP</option>
+</select>
+</label>
+<label><input id="watchlist" type="checkbox"> Watchlist only</label>
+<label>Category <select id="category"><option value="">All categories</option></select></label>
+<label>Chain <select id="chain"><option value="">All chains</option></select></label>
+<label>Sort
+<select id="sort">
+<option value="implied">Implied value, high to low</option>
+<option value="perhour">Dollars an hour, high to low</option>
+<option value="tvl">TVL, high to low</option>
+<option value="name">Name, A to Z</option>
+</select>
+</label>
+</div>
+<p id="count"></p>
+<table class="data" id="board-table">
+<thead><tr><th>#</th><th>Protocol</th><th>Category</th><th>Chain</th><th>TVL</th><th>7-day</th><th>Implied value</th><th>Middle 50% range</th><th>Verdict</th><th>$/hr</th></tr></thead>
+<tbody id="board-body"></tbody>
+</table>
+<p id="check"></p>
+</section>
+
+<section id="detail" hidden>
+<h2 id="detail-title"></h2>
+<div id="detail-body"></div>
+</section>
+
+<section id="scatter">
+<h2>The fit, drawn</h2>
+<p>Each dot is a trading protocol from the training set: its TVL against its market cap, both on log scales. The line is the fitted size curve at zero seven-day change. The green dots are the 198 ranked protocols, plotted at their implied value. The spread around the line is the honest part: the model explains about a third of it.</p>
+<svg id="scatter-svg" width="880" height="460" role="img" aria-label="Scatter of market cap against TVL with the fitted line"></svg>
+</section>
+
+<section id="live-full">
+<h2>Live comps — all 24 largest that already trade</h2>
+<table class="data"><thead><tr><th>Protocol</th><th>Category</th><th>TVL</th><th>Market cap</th><th>Cap / TVL</th></tr></thead><tbody id="live-body"></tbody></table>
+</section>
+
+<footer>
+<p>This board is a ranking of pre-token protocols by a model fitted on 90 trading protocols. It is not investment advice: the model explains about a third of the spread in log market value, the ranges are wide, and a token may never launch. Farm plans assume a 7% drop share, six transactions and two hours of work; check the protocol's own pages before you deposit anything.</p>
+</footer>
+<script src="radar-data.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
