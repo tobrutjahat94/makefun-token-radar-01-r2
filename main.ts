@@ -18,13 +18,19 @@ const DASHBOARD_MAX_FILES = 400;
 const DASHBOARD_MAX_BYTES = 4 * 1024 * 1024;
 
 function usage(): never {
-  console.error('usage: node main.ts --input <snapshot.json> [--output <dir>]');
+  console.error('usage: node main.ts [--input <snapshot.json|dir>] [--output <dir>]');
+  console.error('  --input defaults to $MAKEFUN_INPUT_DIR, then /input (a directory means <dir>/snapshot.json)');
   console.error('  --output defaults to $MAKEFUN_OUTPUT_DIR, then /output');
   process.exit(2);
 }
 
+function resolveInput(raw: string): string {
+  if (existsSync(raw) && statSync(raw).isDirectory()) return join(raw, 'snapshot.json');
+  return raw;
+}
+
 function parseArgs(argv: string[]): { input: string; output: string } {
-  let input = '';
+  let input = process.env.MAKEFUN_INPUT_DIR ?? '/input';
   let output = process.env.MAKEFUN_OUTPUT_DIR ?? '';
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -36,9 +42,13 @@ function parseArgs(argv: string[]): { input: string; output: string } {
       usage();
     }
   }
-  if (input === '') usage();
+  const resolved = resolveInput(input);
+  if (!existsSync(resolved)) {
+    console.error(`input snapshot not found: ${resolved} (from --input ${input})`);
+    process.exit(2);
+  }
   if (output === '') output = '/output';
-  return { input, output };
+  return { input: resolved, output };
 }
 
 /** Escape text for the static HTML main.ts bakes into the page. */
